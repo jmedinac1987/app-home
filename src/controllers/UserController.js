@@ -13,7 +13,7 @@ async function signUp(req, res) {
   });
 
   await user.save(err => {
-    if (err) return faliedResponse(res, err);
+    if (err) return faliedResponse(res, err, 500);
 
     return successResponse(res, {
       token: service.createToken(user, req.originalUrl)
@@ -25,35 +25,34 @@ async function signIn(req, res) {
   await User.findOne({ email: req.body.email })
     .then(user => {
       if (!user) return notFound(res);
-
       const password_verification = bcrypt.compareSync(
         req.body.password,
         user.password
       );
 
       if (password_verification) {
-        changelastLogin(req.body.email);
-        successResponse(res, {
+        changelastLogin(res, req.body.email);
+        return successResponse(res, {
           message: "Login correcto",
           token: service.createToken(user, req.originalUrl)
         });
       } else {
-        res.status(500).send({ message: "Email o Password incorrectos" });
+        return faliedResponse(res, "Email o Password incorrectos", 403);
       }
     })
     .catch(error => {
-      return faliedResponse(res, error);
+      return faliedResponse(res, error, 500);
     });
 }
 
-async function changelastLogin(email) {
+async function changelastLogin(res, email) {
   let dateLogin = {
     lastLogin: Date.now()
   };
 
-  await User.findOneAndUpdate({ email: email }, dateLogin)
-    .then(response => console.log(`OK: ${response}`))
-    .catch(error => console.log(`NOK: ${error}`));
+  await User.findOneAndUpdate({ email: email }, dateLogin).catch(error =>
+    faliedResponse(res, error, 500)
+  );
 }
 
 async function closeAcount(req, res) {
@@ -69,9 +68,9 @@ function successResponse(res, message) {
   return res.status(200).send(message);
 }
 
-function faliedResponse(res, error) {
+function faliedResponse(res, error, codeHTTP) {
   return res
-    .status(500)
+    .status(codeHTTP)
     .send({ message: `Error al realizar la petición - ${error}` });
 }
 

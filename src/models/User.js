@@ -6,8 +6,14 @@ const bcrypt = require("bcrypt-nodejs");
 
 const user_schema = Schema({
   email: { type: String, unique: true, lowercase: true },
-  displayName: { type: String, minlength: 3, maxlength: 125, required: true },
-  password: { type: String, minlength: 8, required: true, select: false }, //select: false, evitamos que cuando se haga get del usuario la contrasea no sea enviada
+  displayName: {
+    type: String,
+    minlength: 3,
+    maxlength: 125,
+    lowercase: true,
+    required: true
+  },
+  password: { type: String, minlength: 8, required: true }, //select: false, evitamos que cuando se haga get del usuario la contrasea no sea enviada
   signUpDate: { type: Date, default: Date.now() },
   lastLogin: { type: Date, default: Date.now() }
 });

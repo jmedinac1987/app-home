@@ -1,10 +1,10 @@
 "use strict";
 const express = require("express");
 const app = express();
-const path = require("path");
 const cors = require("cors");
-const config = require("./config");
 const morgan = require("morgan");
+const config = require("./config");
+const apiV1 = require('./routes/ApiV1');
 
 //Middlewares
 app.use(cors(config.corsOptions));
@@ -26,6 +26,6 @@ app.get("/gastos", (req, res) => {
 });
 
 //Rutas API
-//app.use('/api', api);
+app.use('/apiv1', apiV1);
 
 module.exports = app;
