@@ -1,8 +1,8 @@
 "use strict";
 
 const mongoose = require("mongoose");
-const app = require("./App");
-const config = require("./Config");
+const app = require("./app");
+const config = require("./config");
 
 //conection db and server listened
 mongoose

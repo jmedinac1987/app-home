@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const cors = require("cors");
-const config = require("./Config");
+const config = require("./config");
 const morgan = require("morgan");
 
 //Middlewares
