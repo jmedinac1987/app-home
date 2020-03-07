@@ -3,11 +3,11 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const monthly_expenses_schema = Schema({
+const debts_schema = Schema({
   type: {
     type: String,
     lowercase: true,
-    enum: ["existente", "mensual"],
+    enum: ["diario", "quincenal" ,"mensual"],
     required: true
   },
   description: {
@@ -21,4 +21,4 @@ const monthly_expenses_schema = Schema({
   payment_date: { type: Date }
 });
 
-module.exports = mongoose.model("MonthlyExpenses", monthly_expenses_schema);
+module.exports = mongoose.model("Debts", debts_schema);
